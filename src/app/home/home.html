@@ -1,4 +1,12 @@
-<div class="home-wrapper">
+@if (!started()) {
+  <div class="splash-overlay" (click)="onStart()">
+    <img src="ankamantatra.png" alt="Ankamantatra" class="splash-logo" />
+    <p class="splash-title">Ankamantatra</p>
+    <p class="splash-tap">▶ Tsindrio eto hiantomboka</p>
+  </div>
+}
+
+<div class="home-wrapper" [class.hidden]="!started()">
 
   <!-- ══════════════════════════════════════════
        HERO — plein écran

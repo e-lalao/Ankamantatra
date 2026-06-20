@@ -34,14 +34,7 @@ export class AudioService {
       this.bgAudio.volume = 0.35;
     }
     this.bgAudio.muted = this.muted();
-    this.bgAudio.play().catch(() => {
-      // Autoplay bloqué : démarre au prochain geste utilisateur
-      const resume = () => {
-        this.bgAudio?.play().catch(() => {});
-        document.removeEventListener('click', resume);
-      };
-      document.addEventListener('click', resume, { once: true });
-    });
+    this.bgAudio.play().catch(() => {});
   }
 
   stopBgMusic() {

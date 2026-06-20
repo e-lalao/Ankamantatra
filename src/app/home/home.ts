@@ -50,16 +50,21 @@ export class Home implements OnInit, OnDestroy {
   lang         = signal<Lang>('mg');
   t            = computed(() => T[this.lang()]);
   visitorCount = signal<number | null>(null);
+  started      = signal(false);
 
   readonly email = 'fanomezanasarobidy2003@gmail.com';
   readonly year  = new Date().getFullYear();
 
   async ngOnInit() {
-    this.audio.playBgMusic();
     const { data } = await this.multi.client.rpc('increment_visitors');
     if (data != null) this.visitorCount.set(data as number);
   }
   ngOnDestroy() {}
+
+  onStart() {
+    this.started.set(true);
+    this.audio.playBgMusic();
+  }
 
   onHilalao() {
     this.audio.play('woueh');
