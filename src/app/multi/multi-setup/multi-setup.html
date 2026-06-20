@@ -1,0 +1,125 @@
+<main class="ms-page">
+  <div class="bg-circle bg-1"></div>
+  <div class="bg-circle bg-2"></div>
+
+  <div class="ms-card">
+
+    <a routerLink="/" class="back-link">← Hiverina</a>
+
+    <!-- ── CHOISIR MODE ── -->
+    @if (mode() === 'choose') {
+      <div class="ms-icon">👥</div>
+      <h1 class="ms-title">Hilalao miaraka</h1>
+      <p class="ms-sub">Mamorona na miditra session</p>
+
+      <button class="choice-btn create-btn" (click)="goCreate()">
+        <span class="choice-icon">➕</span>
+        <span class="choice-text">
+          <span class="choice-main">Mamorona session</span>
+          <span class="choice-hint">Ho tompon-trano ianao</span>
+        </span>
+      </button>
+
+      <button class="choice-btn join-btn" (click)="goJoin()">
+        <span class="choice-icon">🔑</span>
+        <span class="choice-text">
+          <span class="choice-main">Miditra session</span>
+          <span class="choice-hint">Misy code ampiasaina</span>
+        </span>
+      </button>
+    }
+
+    <!-- ── CRÉER SESSION ── -->
+    @if (mode() === 'create') {
+      <button class="back-link inner-back" (click)="goBack()">← Hiverina</button>
+      <div class="ms-icon">🏠</div>
+      <h1 class="ms-title">Session vaovao</h1>
+
+      <div class="field-group">
+        <label class="field-label">Ny anaranao</label>
+        <input
+          class="ms-input"
+          type="text"
+          placeholder="Ex: Rakoto"
+          [value]="playerName()"
+          (input)="setName($event)"
+          maxlength="20"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Fotoana isaky ny fanontaniana</label>
+        <div class="dur-grid">
+          @for (d of durations; track d) {
+            <button
+              class="dur-btn"
+              [class.active]="duration() === d"
+              [class.unlimited]="d === 0"
+              (click)="setDuration(d)"
+            >
+              @if (d === 0) {
+                <span class="dur-num">∞</span>
+                <span class="dur-unit">Tsy asiana fetra</span>
+              } @else {
+                <span class="dur-num">{{ d < 60 ? d : d/60 }}</span>
+                <span class="dur-unit">{{ d < 60 ? 'segondra' : 'minitra' }}</span>
+              }
+            </button>
+          }
+        </div>
+      </div>
+
+      @if (error()) {
+        <p class="ms-error">⚠️ {{ error() }}</p>
+      }
+
+      <button class="start-btn" (click)="create()" [disabled]="loading()">
+        @if (loading()) { ⏳ Miomana... } @else { Mamorona session →  }
+      </button>
+    }
+
+    <!-- ── REJOINDRE SESSION ── -->
+    @if (mode() === 'join') {
+      <button class="back-link inner-back" (click)="goBack()">← Hiverina</button>
+      <div class="ms-icon">🔑</div>
+      <h1 class="ms-title">Miditra session</h1>
+
+      <div class="field-group">
+        <label class="field-label">Ny anaranao</label>
+        <input
+          class="ms-input"
+          type="text"
+          placeholder="Ex: Rasoa"
+          [value]="playerName()"
+          (input)="setName($event)"
+          maxlength="20"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Code session (6 tarehintsoratra)</label>
+        <input
+          class="ms-input code-input"
+          type="text"
+          placeholder="Ex: AB3K7P"
+          [value]="joinCode()"
+          (input)="setCode($event)"
+          maxlength="6"
+          autocomplete="off"
+          style="text-transform:uppercase;letter-spacing:.18em;font-size:1.5rem;text-align:center"
+        />
+      </div>
+
+      @if (error()) {
+        <p class="ms-error">⚠️ {{ error() }}</p>
+      }
+
+      <button class="start-btn" (click)="join()" [disabled]="loading()">
+        @if (loading()) { ⏳ Miomana... } @else { Miditra →  }
+      </button>
+    }
+
+  </div>
+</main>

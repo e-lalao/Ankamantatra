@@ -1,0 +1,136 @@
+<div class="home-wrapper">
+
+  <!-- ══════════════════════════════════════════
+       HERO — plein écran
+  ══════════════════════════════════════════ -->
+  <main class="home">
+
+    <!-- Barre de navigation -->
+    <nav class="top-nav">
+      <button class="nav-link" (click)="scrollTo('ankamantatra-section')">🎭 Ankamantatra</button>
+      <button class="nav-link" (click)="scrollTo('elalao-section')">🌿 e-lalao</button>
+    </nav>
+
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+
+    <div class="confetti c1">★</div>
+    <div class="confetti c2">♪</div>
+    <div class="confetti c3">✦</div>
+    <div class="confetti c4">♫</div>
+    <div class="confetti c5">★</div>
+    <div class="confetti c6">✿</div>
+    <div class="confetti c7">♪</div>
+    <div class="confetti c8">✦</div>
+
+    <div class="page-layout">
+
+      <div class="left-col">
+        <div class="brand-badge">
+          <img src="logo-de-e-lalao.png" alt="e-lalao" class="brand-logo" />
+        </div>
+
+        <h1 class="game-title">Ankamantatra</h1>
+
+        <div class="speech-bubble">
+          <p class="question-text">Inona ary<br>izany ô?</p>
+          <div class="bubble-tail"></div>
+        </div>
+
+        <div class="play-btns">
+          <button class="play-btn" (click)="onHilalao()">
+            <span class="play-circle">▶</span>
+            <span class="play-label">Hilalao irery</span>
+          </button>
+          <button class="multi-btn" (click)="onMulti()">
+            <span class="multi-icon">👥</span>
+            <span class="multi-label">Hilalao miaraka</span>
+          </button>
+        </div>
+
+        <button class="mute-home-btn" (click)="audio.toggleMute()" [title]="audio.muted() ? 'Rendre le son' : 'Couper le son'">
+          {{ audio.muted() ? '🔇' : '🔊' }}
+        </button>
+
+        <div class="dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="image-frame">
+          <div class="frame-glow"></div>
+          <img
+            src="accueil.png"
+            alt="Ankamantatra"
+            class="illustration"
+            [class.hilalao-anim]="imageAnim()"
+          />
+          <div class="frame-badge">📖</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Flèche scroll vers À propos -->
+    <button class="scroll-hint" (click)="scrollToAbout()" aria-label="En savoir plus">
+      <span class="scroll-arrow">↓</span>
+    </button>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════
+       À PROPOS
+  ══════════════════════════════════════════ -->
+  <section class="about-section" id="apropos">
+
+    <!-- Toggle langue -->
+    <div class="lang-toggle">
+      <button class="lang-btn" [class.active]="lang() === 'mg'" (click)="lang.set('mg')">MG</button>
+      <button class="lang-btn" [class.active]="lang() === 'fr'" (click)="lang.set('fr')">FR</button>
+      <button class="lang-btn" [class.active]="lang() === 'en'" (click)="lang.set('en')">EN</button>
+    </div>
+
+    <div class="about-grid">
+
+      <!-- Carte : le jeu -->
+      <div class="about-card" id="ankamantatra-section">
+        <div class="card-icon">🔥</div>
+        <h2 class="card-title">{{ t().gameTitle }}</h2>
+        <p class="card-text">{{ t().gameText }}</p>
+      </div>
+
+      <!-- Carte : e-lalao -->
+      <div class="about-card" id="elalao-section">
+        <div class="card-icon">🌿</div>
+        <h2 class="card-title">{{ t().aboutTitle }}</h2>
+        <p class="card-text">{{ t().aboutText }}</p>
+
+        <a
+          class="contact-btn"
+          [href]="'mailto:' + email"
+          target="_blank"
+          rel="noopener"
+        >
+          <span>✉️</span>
+          <span>{{ t().contactBtn }}</span>
+        </a>
+        <p class="contact-hint">{{ t().contactLabel }}</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <img src="logo-de-e-lalao.png" alt="e-lalao" class="footer-logo" />
+    <p class="footer-line">{{ t().footerLine }}</p>
+    <p class="footer-copy">© {{ year }} e-lalao</p>
+  </footer>
+
+</div>

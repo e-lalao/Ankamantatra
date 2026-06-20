@@ -1,0 +1,66 @@
+<main class="lobby-page">
+  <div class="bg-circle bg-1"></div>
+  <div class="bg-circle bg-2"></div>
+
+  <div class="lobby-card">
+
+    <!-- En-tête -->
+    <div class="lobby-header">
+      <button class="leave-btn" (click)="leave()" title="Hivoaka">✕</button>
+      <div class="lobby-title-wrap">
+        <span class="lobby-icon">🎮</span>
+        <h1 class="lobby-title">Miandry ny namana</h1>
+      </div>
+    </div>
+
+    <!-- Code de session -->
+    <div class="code-section">
+      <p class="code-label">Code session</p>
+      <div class="code-box">
+        <span class="code-text">{{ code }}</span>
+        <button class="copy-btn" (click)="copyCode()" [title]="copied ? 'Voakopy!' : 'Copier le code'">
+          {{ copied ? '✓' : '📋' }}
+        </button>
+      </div>
+      <p class="code-hint">Zarao amin'ny namanao ity code ity</p>
+    </div>
+
+    <!-- Liste joueurs -->
+    <div class="players-section">
+      <p class="players-label">Mpilalao ({{ players.length }})</p>
+      <ul class="players-list">
+        @for (p of players; track p.id) {
+          <li class="player-item" [class.me]="p.id === multi.myPlayerId()">
+            <span class="player-avatar">{{ p.is_host ? '👑' : '🎯' }}</span>
+            <span class="player-name">
+              {{ p.name }}
+              @if (p.id === multi.myPlayerId()) { <span class="you-badge">(ianao)</span> }
+            </span>
+            @if (p.is_host) { <span class="host-tag">Hôte</span> }
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Statut / bouton démarrer -->
+    @if (isHost) {
+      <button
+        class="start-btn"
+        (click)="startGame()"
+        [disabled]="players.length < 1"
+      >
+        Hanomboka! ▶
+      </button>
+      <p class="start-hint">
+        @if (players.length < 2) { Miandry ny mpilalao hafa... }
+        @else { Ianao no tompon-trano — ianao no hanomboka! }
+      </p>
+    } @else {
+      <div class="waiting-wrap">
+        <div class="waiting-spinner"></div>
+        <p class="waiting-text">Miandry ny tompon-trano hanomboka...</p>
+      </div>
+    }
+
+  </div>
+</main>

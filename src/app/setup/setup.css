@@ -1,0 +1,160 @@
+:host { display: block; min-height: 100dvh; }
+
+.setup-page {
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% -10%, #bae6fd 0%, transparent 60%),
+    linear-gradient(170deg, #e0f2fe 0%, #7ec8e3 30%, #3b9ed9 60%, #1565c0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: .12;
+}
+.bg-1 { width: 400px; height: 400px; background: #fff; top: -100px; left: -100px; }
+.bg-2 { width: 300px; height: 300px; background: #7dd3fc; bottom: -80px; right: -60px; }
+
+.setup-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255,255,255,.4);
+  border-radius: 2rem;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+
+.back-link {
+  align-self: flex-start;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: .95rem;
+  color: rgba(255,255,255,.85);
+  text-decoration: none;
+  transition: color .2s;
+}
+.back-link:hover { color: #fff; }
+
+.setup-icon { font-size: 3.5rem; line-height: 1; }
+
+.setup-title {
+  margin: 0;
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 3px 10px rgba(0,0,0,.2);
+}
+
+.setup-sub {
+  margin: -.5rem 0 0;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  color: rgba(255,255,255,.75);
+  text-align: center;
+}
+
+/* Grille durées */
+.duration-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.duration-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 1.25rem;
+  border: 2.5px solid rgba(255,255,255,.35);
+  background: rgba(255,255,255,.1);
+  cursor: pointer;
+  transition: all .2s ease;
+  color: #fff;
+  font-family: 'Fredoka One', cursive;
+}
+.duration-btn:hover {
+  background: rgba(255,255,255,.22);
+  border-color: rgba(255,255,255,.6);
+  transform: translateY(-2px);
+}
+.duration-btn.active {
+  background: linear-gradient(135deg, #ff8c00, #f97316);
+  border-color: #f97316;
+  box-shadow: 0 4px 0 #c2410c, 0 8px 20px rgba(249,115,22,.45);
+  transform: translateY(-3px);
+}
+.duration-num {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.duration-unit {
+  font-size: .85rem;
+  opacity: .8;
+}
+
+/* Bouton "sans chrono" plus large */
+.duration-btn.unlimited {
+  width: 100%;
+  height: 64px;
+  flex-direction: row;
+  gap: .6rem;
+  border-radius: 1.25rem;
+}
+.duration-btn.unlimited .duration-num {
+  font-size: 1.6rem;
+}
+.duration-btn.unlimited .duration-unit {
+  font-size: .95rem;
+  opacity: .9;
+}
+
+/* Bouton démarrer */
+.start-btn {
+  margin-top: .4rem;
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  color: #1d4ed8;
+  background: #fff;
+  border: none;
+  border-radius: 3rem;
+  padding: .8rem 3rem;
+  cursor: pointer;
+  box-shadow: 0 5px 0 rgba(0,0,0,.15), 0 8px 24px rgba(0,0,0,.2);
+  transition: transform .15s ease, box-shadow .15s ease;
+  letter-spacing: .04em;
+  width: 100%;
+}
+.start-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 0 rgba(0,0,0,.15), 0 12px 28px rgba(0,0,0,.22);
+}
+.start-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 rgba(0,0,0,.15), 0 4px 12px rgba(0,0,0,.18);
+}
+
+@media (max-width: 420px) {
+  .duration-btn { width: 68px; height: 68px; }
+  .duration-num { font-size: 1.5rem; }
+}

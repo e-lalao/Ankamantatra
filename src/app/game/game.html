@@ -1,0 +1,134 @@
+<div class="game-page">
+
+  <!-- ── Chargement ── -->
+  @if (phase() === 'loading') {
+    <div class="center-screen">
+      <div class="spinner"></div>
+      <p class="center-text">Mampiditra ny fanontaniana…</p>
+    </div>
+  }
+
+  <!-- ── Erreur ── -->
+  @if (phase() === 'error') {
+    <div class="center-screen">
+      <div class="error-icon">⚠️</div>
+      <p class="center-text">Tsy azo nalaina ny fanontaniana.</p>
+      <p class="center-hint">Jereo ny SHEET_URL ao amin'ny quiz.service.ts</p>
+      <a routerLink="/setup" class="retry-btn">← Hiverina</a>
+    </div>
+  }
+
+  <!-- ── Jeu en cours ── -->
+  @if (phase() === 'playing' || phase() === 'correct' || phase() === 'failed') {
+
+    <div class="progress-bar">
+      <div
+        class="progress-fill"
+        [style.width.%]="(currentIndex() / questions().length) * 100"
+      ></div>
+    </div>
+
+    <div class="game-layout">
+
+      <!-- En-tête -->
+      <header class="game-header">
+        <button class="home-btn" (click)="goHome()" title="Accueil">🏠</button>
+        <button class="mute-btn" (click)="audio.toggleMute()" [title]="audio.muted() ? 'Rendre le son' : 'Couper le son'">
+          {{ audio.muted() ? '🔇' : '🔊' }}
+        </button>
+
+        <div class="score-badge">
+          🏆&nbsp;<span class="score-num">{{ score() }}</span>
+        </div>
+
+        <!-- Timer circulaire -->
+        @if (hasTimer) {
+          <div class="timer-wrap" [ngClass]="{ danger: timerRatio() < 0.25 }">
+            <svg class="timer-svg" viewBox="0 0 100 100">
+              <circle class="timer-track" cx="50" cy="50" r="45" />
+              <circle
+                class="timer-arc"
+                cx="50" cy="50" r="45"
+                [style.stroke]="timerColor()"
+                [style.stroke-dasharray]="circumference"
+                [style.stroke-dashoffset]="dashOffset()"
+              />
+            </svg>
+            <span class="timer-num">{{ timeLeft() }}</span>
+          </div>
+        } @else {
+          <div class="no-timer-badge">∞</div>
+        }
+      </header>
+
+      <!-- Carte question -->
+      <div
+        class="question-card"
+        [ngClass]="{ correct: phase() === 'correct', failed: phase() === 'failed' }"
+      >
+        <span class="question-index">Fanontaniana {{ currentIndex() + 1 }}</span>
+        <p class="question-text">{{ current().question }}</p>
+
+        @if (phase() === 'correct' || phase() === 'failed') {
+          <div class="answer-reveal" [ngClass]="{ correct: phase() === 'correct', failed: phase() === 'failed' }">
+            <span class="reveal-icon">{{ phase() === 'correct' ? '✓' : '→' }}</span>
+            <span class="reveal-text">{{ current().reponse }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Champ réponse -->
+      <div class="input-wrap" [ngClass]="{ correct: phase() === 'correct', failed: phase() === 'failed' }">
+        <input
+          #answerInput
+          class="answer-input"
+          type="text"
+          [(ngModel)]="userAnswer"
+          (ngModelChange)="onInput()"
+          placeholder="Valiny…"
+          [disabled]="phase() !== 'playing'"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+          aria-label="Valiny"
+        />
+      </div>
+
+      <!-- Boutons -->
+      <div class="action-btns">
+        @if (phase() === 'playing') {
+          <button class="afapo-btn" (click)="giveUp()">Afapo</button>
+        }
+        <button class="manaraka-btn" (click)="next()">
+          Manaraka <span class="arrow">→</span>
+        </button>
+      </div>
+
+    </div>
+  }
+
+  <!-- ── Résultat final ── -->
+  @if (phase() === 'done') {
+    <div class="done-screen">
+      <div class="done-emoji">{{ resultEmoji() }}</div>
+      <h2 class="done-title">{{ resultLabel() }}</h2>
+      <div class="done-score">
+        <span class="done-num">{{ score() }}</span>
+        <span class="done-denom"> / {{ questions().length }}</span>
+      </div>
+      <p class="done-sub">fanontaniana marina</p>
+
+      <div class="stars">
+        @for (i of [1, 2, 3]; track i) {
+          <span class="star" [ngClass]="{ lit: score() / questions().length >= i / 3 }">★</span>
+        }
+      </div>
+
+      <div class="done-btns">
+        <button class="restart-btn" (click)="restart()">▶ Angatotra</button>
+        <button class="go-home-btn" (click)="goHome()">🏠 Fanombohana</button>
+      </div>
+    </div>
+  }
+
+</div>

@@ -1,0 +1,36 @@
+<div class="setup-page">
+
+  <div class="bg-circle bg-1"></div>
+  <div class="bg-circle bg-2"></div>
+
+  <div class="setup-card">
+    <a routerLink="/" class="back-link">← Hiverina</a>
+
+    <div class="setup-icon">⏱️</div>
+    <h1 class="setup-title">Amboary ny fotoana</h1>
+    <p class="setup-sub">Fotoana isaky ny fanontaniana</p>
+
+    <div class="duration-grid">
+      @for (d of durations; track d) {
+        <button
+          class="duration-btn"
+          [ngClass]="{ active: selected() === d, unlimited: d === 0 }"
+          (click)="select(d)"
+        >
+          @if (d === 0) {
+            <span class="duration-num">∞</span>
+            <span class="duration-unit">Tsy asiana fetra</span>
+          } @else {
+            <span class="duration-num">{{ d }}</span>
+            <span class="duration-unit">s</span>
+          }
+        </button>
+      }
+    </div>
+
+    <button class="start-btn" (click)="start()">
+      ▶&nbsp; Hanomboka!
+    </button>
+  </div>
+
+</div>

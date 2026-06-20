@@ -1,0 +1,140 @@
+<div class="mg-page">
+
+  <!-- ── PHASE DONE ── -->
+  @if (session()?.phase === 'done') {
+    <div class="done-screen">
+      <div class="done-emoji">{{ resultEmoji() }}</div>
+      <h1 class="done-title">Vita ny lalao!</h1>
+
+      <!-- Classement final -->
+      <div class="final-board">
+        <p class="board-title">🏆 Classement final</p>
+        <ul class="board-list">
+          @for (p of players(); track p.id; let i = $index) {
+            <li class="board-item" [class.me]="p.id === multi.myPlayerId()">
+              <span class="rank">{{ i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1) + '.' }}</span>
+              <span class="board-name">{{ p.name }}</span>
+              <span class="board-score">{{ p.score }} pt</span>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="done-btns">
+        @if (isHost) {
+          <button class="go-home-btn orange" (click)="onEnd()">Hametraka ny session</button>
+        } @else {
+          <button class="go-home-btn" (click)="onHome()">Hiverina</button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ── PHASE PLAYING ── -->
+  @if (session()?.phase === 'playing') {
+    <div class="mg-layout">
+
+      <!-- Colonne gauche: question -->
+      <div class="question-col">
+
+        <!-- Header -->
+        <div class="mg-header">
+          <button class="home-btn" (click)="onHome()" title="Hiverina">🏠</button>
+
+          <div class="score-badge">
+            🏆 <span class="score-num">{{ myPlayer()?.score ?? 0 }}</span>
+          </div>
+
+          <!-- Timer -->
+          @if (hasTimer) {
+            <div class="timer-wrap" [class.danger]="timeLeft() <= 5 && timeLeft() > 0">
+              <svg class="timer-svg" viewBox="0 0 60 60">
+                <circle class="timer-track" cx="30" cy="30" r="26"/>
+                <circle class="timer-arc"
+                  cx="30" cy="30" r="26"
+                  [attr.stroke]="timerColor()"
+                  [attr.stroke-dasharray]="circumference"
+                  [attr.stroke-dashoffset]="dashOffset()"
+                />
+              </svg>
+              <div class="timer-num">{{ timeLeft() }}</div>
+            </div>
+          } @else {
+            <div class="no-timer-badge">∞</div>
+          }
+
+          <button class="mute-btn" (click)="audio.toggleMute()">
+            {{ audio.muted() ? '🔇' : '🔊' }}
+          </button>
+        </div>
+
+        <!-- Fanontaniana — carte blanche (question + révélation seulement) -->
+        <div class="question-card" [class.correct]="cardState() === 'correct'" [class.failed]="cardState() === 'failed'">
+          <span class="question-index">
+            Fanontaniana {{ (session()?.current_question ?? 0) + 1 }}
+          </span>
+          <p class="question-text">{{ currentQ()?.question }}</p>
+
+          @if (revealed()) {
+            <div class="answer-reveal" [class.correct]="cardState() === 'correct'" [class.failed]="cardState() === 'failed'">
+              <span class="reveal-icon">{{ cardState() === 'correct' ? '✅' : '💡' }}</span>
+              <span class="reveal-text">{{ currentQ()?.reponse }}</span>
+            </div>
+          }
+        </div>
+
+        <!-- Input — en dehors de la carte, sur fond bleu -->
+        <div class="input-wrap" [class.correct]="cardState() === 'correct'" [class.failed]="cardState() === 'failed'">
+          <input
+            class="answer-input"
+            type="text"
+            placeholder="Soraty eto ny valinteninao..."
+            [value]="userInput()"
+            (input)="onInput($event)"
+            [disabled]="cardState() !== 'idle'"
+            autocomplete="off"
+          />
+        </div>
+
+        <!-- Boutons — en dehors de la carte, sur fond bleu -->
+        <div class="action-btns">
+          @if (cardState() === 'idle') {
+            <button class="afapo-btn" (click)="onAfapo()">Afapo 👀</button>
+          }
+          @if (cardState() === 'revealed') {
+            <p class="wait-timer">⏳ Miandry ny faran'ny fotoana...</p>
+          }
+          @if (cardState() === 'failed' || cardState() === 'correct') {
+            @if (isHost) {
+              <button class="manaraka-btn" (click)="onManaraka()">
+                Manaraka <span class="arrow">→</span>
+              </button>
+            } @else {
+              <p class="wait-host">Miandry ny tompon-trano...</p>
+            }
+          }
+        </div>
+
+      </div>
+
+      <!-- Colonne droite: classement en direct -->
+      <div class="leaderboard-col">
+        <div class="leaderboard">
+          <p class="lb-title">🏅 Classement</p>
+          <ul class="lb-list">
+            @for (p of players(); track p.id; let i = $index) {
+              <li class="lb-item" [class.me]="p.id === multi.myPlayerId()">
+                <span class="lb-rank">{{ i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1) + '.' }}</span>
+                <span class="lb-name">{{ p.name }}</span>
+                <span class="lb-answered">{{ p.answered ? '✓' : '⌛' }}</span>
+                <span class="lb-score">{{ p.score }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  }
+
+</div>
