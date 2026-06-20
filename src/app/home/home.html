@@ -71,6 +71,11 @@
           />
           <div class="frame-badge">📖</div>
         </div>
+        @if (visitorCount() !== null) {
+          <div class="visitor-badge">
+            👁 {{ visitorCount()!.toLocaleString() }} mpitsidika
+          </div>
+        }
       </div>
 
     </div>

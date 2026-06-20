@@ -50,6 +50,24 @@
   border-color: rgba(255,255,255,.5);
 }
 
+.visitor-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.18);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255,255,255,.35);
+  border-radius: 2rem;
+  padding: .35rem 1.1rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: .9rem;
+  color: #fff;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+}
+
 @media (max-width: 750px) {
   .top-nav {
     left: 1rem;
@@ -58,6 +76,7 @@
     transform: none;
   }
   .nav-link { font-size: .78rem; padding: .3rem .7rem; }
+  .visitor-badge { font-size: .8rem; }
 }
 
 /* Nuages */
@@ -259,7 +278,7 @@
 .dot.active { background:#fbbf24; border-color:#fbbf24; box-shadow:0 0 8px #fbbf24; }
 
 /* Image */
-.right-col { flex:1; display:flex; align-items:center; justify-content:center; min-width:0; }
+.right-col { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:0; gap:.8rem; }
 .image-frame { position:relative; animation: bob 4s ease-in-out infinite; }
 .frame-glow { position:absolute; inset:-20px; background:radial-gradient(ellipse,rgba(125,211,252,.5) 0%,transparent 70%); border-radius:50%; z-index:0; animation:glowPulse 3s ease-in-out infinite; }
 .illustration { position:relative; z-index:1; width:clamp(180px,38vw,420px); height:auto; border-radius:2rem; box-shadow:0 20px 60px rgba(0,0,0,.25),0 0 0 6px rgba(255,255,255,.3),0 0 0 12px rgba(255,255,255,.1); display:block; }
@@ -471,6 +490,13 @@
   color: rgba(255,255,255,.45);
   text-align: center;
   font-style: italic;
+}
+.footer-visitors {
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  font-size: .9rem;
+  color: rgba(255,255,255,.45);
+  letter-spacing: .04em;
 }
 .footer-copy {
   margin: 0;

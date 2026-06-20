@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { AudioService } from '../audio.service';
+import { MultiService } from '../multi.service';
 
 type Lang = 'mg' | 'fr' | 'en';
 
@@ -42,16 +43,22 @@ const T = {
 })
 export class Home implements OnInit, OnDestroy {
   private router = inject(Router);
+  private multi  = inject(MultiService);
   audio          = inject(AudioService);
 
-  imageAnim = signal(false);
-  lang      = signal<Lang>('mg');
-  t         = computed(() => T[this.lang()]);
+  imageAnim    = signal(false);
+  lang         = signal<Lang>('mg');
+  t            = computed(() => T[this.lang()]);
+  visitorCount = signal<number | null>(null);
 
   readonly email = 'fanomezanasarobidy2003@gmail.com';
   readonly year  = new Date().getFullYear();
 
-  ngOnInit() { this.audio.playBgMusic(); }
+  async ngOnInit() {
+    this.audio.playBgMusic();
+    const { data } = await this.multi.client.rpc('increment_visitors');
+    if (data != null) this.visitorCount.set(data as number);
+  }
   ngOnDestroy() {}
 
   onHilalao() {
