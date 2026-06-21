@@ -8,7 +8,7 @@
 
       <!-- Classement final -->
       <div class="final-board">
-        <p class="board-title">🏆 Classement final</p>
+        <p class="board-title">🏆 Valin\'ny lalao</p>
         <ul class="board-list">
           @for (p of players(); track p.id; let i = $index) {
             <li class="board-item" [class.me]="p.id === multi.myPlayerId()">
@@ -22,7 +22,7 @@
 
       <div class="done-btns">
         @if (isHost) {
-          <button class="go-home-btn orange" (click)="onEnd()">Hametraka ny session</button>
+          <button class="go-home-btn orange" (click)="onEnd()">Hamarana ny lalao</button>
         } @else {
           <button class="go-home-btn" (click)="onHome()">Hiverina</button>
         }

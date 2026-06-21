@@ -8,12 +8,12 @@ type Lang = 'mg' | 'fr' | 'en';
 const T = {
   mg: {
     gameTitle:    'Ny Ankamantatra',
-    gameText:     'Ny ankamantatra dia kilalao malgasy, natao ho an\'ny daholobe. Nanodidina ny afo hariva, na rehefa mivory ny ankizy marobe, no nifankalozana ankamantatra — fomba fanabeazana sy famolavolana ny saina fahiny. Ny ankamantatra ao amin\'ity lalao ity dia voaangona avy amin\'ny boky sy ny lovan-tsofina nentim-paharazana.Ahitana ankamantatra vaovao vao nofonin\'ny ankehitriny ihany koa.',
+    gameText:     'Ny ankamantatra dia kilalao malgasy, natao ho an\'ny daholobe. Nanodidina ny afo takariva iny, na rehefa sendra mivory ny ankizy maromaro, no raikitra ny ankamantatra — fomba fanabeazana sy famolavolana ny saina fahiny. Ny ankamantatra ao amin\'ity lalao ity dia voaangona avy amin\'ny boky sy ny lovan-tsofina nentim-paharazana.Ahitana ankamantatra vaovao vao noforonin\'ny ankehitriny ihany koa.',
     aboutTitle:   'Momba ny e-lalao',
-    aboutText:    'Ny e-lalao dia tetikasa miezaka hanandratana ny fiteny sy ny kolontsaina malgasy amin\'ny alalan\'ny teknolojia maoderina. Misokatra ho an\'ny fiaraha-miasa, ny torohevitra ary ny famatsiana rehetra izahay. Ny hevitrao dia sarobidy aminay — aza misalasala mifandraisa raha misy tianao zaraina.',
-    contactBtn:   'Mifandraisa aminay',
+    aboutText:    'Ny e-lalao dia tetikasa iezahana hanandratana ny fiteny sy ny kolontsaina malagasy amin\'ny alalan\'ny teknolojia avo lenta. Misokatra amin\'ny fiaraha-miasa sy torohevitra ary ny famatsiana rehetra izahay. Ny hevitrao dia sarobidy aminay — aza misalasala mifandray aminay raha misy tianao zaraina.',
+    contactBtn:   'Te hifandray aminay?',
     contactLabel: 'Alefaso ny hevitrao',
-    footerLine:   'Natao tamin\'ny fitiavana ho an\'ny kolontsaina malgasy',
+    footerLine:   'Natao am-pitiavana hanandratana ny ny kolontsaina malagasy',
   },
   fr: {
     gameTitle:    "L'Ankamantatra",

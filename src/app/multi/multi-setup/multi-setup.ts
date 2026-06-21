@@ -40,7 +40,7 @@ export class MultiSetup {
   goBack()   { this.mode.set('choose'); this.error.set(''); }
 
   async create() {
-    if (!this.playerName().trim()) { this.error.set('Misy anarana azafady!'); return; }
+    if (!this.playerName().trim()) { this.error.set('Ny anaranao azafady!'); return; }
     this.loading.set(true);
     this.error.set('');
     try {
@@ -57,15 +57,15 @@ export class MultiSetup {
   }
 
   async join() {
-    if (!this.playerName().trim()) { this.error.set('Misy anarana azafady!'); return; }
-    if (!this.joinCode().trim())   { this.error.set('Misy code azafady!');    return; }
+    if (!this.playerName().trim()) { this.error.set('Ny anaranao azafady!'); return; }
+    if (!this.joinCode().trim())   { this.error.set('Ny teny miafina azafady!');    return; }
     this.loading.set(true);
     this.error.set('');
     try {
       await this.multi.joinSession(this.joinCode(), this.playerName().trim());
       this.router.navigate(['/lobby']);
     } catch (e: any) {
-      this.error.set(e.message ?? 'Code tsy mety na session vita');
+      this.error.set(e.message ?? 'Teny miafina diso na tapitra ny kilalao');
     } finally {
       this.loading.set(false);
     }

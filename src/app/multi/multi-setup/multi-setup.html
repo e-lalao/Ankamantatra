@@ -9,13 +9,13 @@
     <!-- ── CHOISIR MODE ── -->
     @if (mode() === 'choose') {
       <div class="ms-icon">👥</div>
-      <h1 class="ms-title">Hilalao miaraka</h1>
-      <p class="ms-sub">Mamorona na miditra session</p>
+      <h1 class="ms-title">Hiaraka hilalao</h1>
+      <p class="ms-sub">Hamorona vondrona na hanatevin-daharana </p>
 
       <button class="choice-btn create-btn" (click)="goCreate()">
         <span class="choice-icon">➕</span>
         <span class="choice-text">
-          <span class="choice-main">Mamorona session</span>
+          <span class="choice-main">Hamorona vondrona</span>
           <span class="choice-hint">Ho tompon-trano ianao</span>
         </span>
       </button>
@@ -23,8 +23,8 @@
       <button class="choice-btn join-btn" (click)="goJoin()">
         <span class="choice-icon">🔑</span>
         <span class="choice-text">
-          <span class="choice-main">Miditra session</span>
-          <span class="choice-hint">Misy code ampiasaina</span>
+          <span class="choice-main">Hanatevin-daharana</span>
+          <span class="choice-hint">Misy teny miafina ampiasaina</span>
         </span>
       </button>
     }
@@ -33,7 +33,7 @@
     @if (mode() === 'create') {
       <button class="back-link inner-back" (click)="goBack()">← Hiverina</button>
       <div class="ms-icon">🏠</div>
-      <h1 class="ms-title">Session vaovao</h1>
+      <h1 class="ms-title">Vondrona vaovao</h1>
 
       <div class="field-group">
         <label class="field-label">Ny anaranao</label>
@@ -49,7 +49,7 @@
       </div>
 
       <div class="field-group">
-        <label class="field-label">Fotoana isaky ny fanontaniana</label>
+        <label class="field-label">Fe-potoana famaliana</label>
         <div class="dur-grid">
           @for (d of durations; track d) {
             <button
@@ -75,7 +75,7 @@
       }
 
       <button class="start-btn" (click)="create()" [disabled]="loading()">
-        @if (loading()) { ⏳ Miomana... } @else { Mamorona session →  }
+        @if (loading()) { ⏳ Andraso kely... } @else { Mamorona session →  }
       </button>
     }
 
@@ -83,7 +83,7 @@
     @if (mode() === 'join') {
       <button class="back-link inner-back" (click)="goBack()">← Hiverina</button>
       <div class="ms-icon">🔑</div>
-      <h1 class="ms-title">Miditra session</h1>
+      <h1 class="ms-title">Hiditra vondrona</h1>
 
       <div class="field-group">
         <label class="field-label">Ny anaranao</label>
@@ -99,7 +99,7 @@
       </div>
 
       <div class="field-group">
-        <label class="field-label">Code session (6 tarehintsoratra)</label>
+        <label class="field-label">Teny miafin'ny vondrona (tarehin-tsoratra 6)</label>
         <input
           class="ms-input code-input"
           type="text"
@@ -117,7 +117,7 @@
       }
 
       <button class="start-btn" (click)="join()" [disabled]="loading()">
-        @if (loading()) { ⏳ Miomana... } @else { Miditra →  }
+        @if (loading()) { ⏳ Andraso kely... } @else { Hiditra →  }
       </button>
     }
 

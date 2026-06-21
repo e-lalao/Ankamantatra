@@ -4,7 +4,7 @@
   @if (phase() === 'loading') {
     <div class="center-screen">
       <div class="spinner"></div>
-      <p class="center-text">Mampiditra ny fanontaniana…</p>
+      <p class="center-text">Miandry ny fanontaniana…</p>
     </div>
   }
 
@@ -12,7 +12,7 @@
   @if (phase() === 'error') {
     <div class="center-screen">
       <div class="error-icon">⚠️</div>
-      <p class="center-text">Tsy azo nalaina ny fanontaniana.</p>
+      <p class="center-text">Tsy azo alaina ny fanontaniana.</p>
       <p class="center-hint">Jereo ny SHEET_URL ao amin'ny quiz.service.ts</p>
       <a routerLink="/setup" class="retry-btn">← Hiverina</a>
     </div>
@@ -66,7 +66,7 @@
         class="question-card"
         [ngClass]="{ correct: phase() === 'correct', failed: phase() === 'failed' }"
       >
-        <span class="question-index">Fanontaniana {{ currentIndex() + 1 }}</span>
+        <span class="question-index">Inona ary irany: </span>
         <p class="question-text">{{ current().question }}</p>
 
         @if (phase() === 'correct' || phase() === 'failed') {
@@ -125,8 +125,8 @@
       </div>
 
       <div class="done-btns">
-        <button class="restart-btn" (click)="restart()">▶ Angatotra</button>
-        <button class="go-home-btn" (click)="goHome()">🏠 Fanombohana</button>
+        <button class="restart-btn" (click)="restart()">▶ Atomboka indray</button>
+        <button class="go-home-btn" (click)="goHome()">🏠 Pejy fandraisana</button>
       </div>
     </div>
   }
