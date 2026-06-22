@@ -10,12 +10,19 @@ import { GameStateService } from '../game-state.service';
   styleUrl: './setup.css'
 })
 export class Setup {
-  private router = inject(Router);
+  private router    = inject(Router);
   private gameState = inject(GameStateService);
 
-  // 0 = sans chrono
-  durations = [15, 30, 60, 90, 120, 0];
-  selected = signal(30);
+  step       = signal<'difficulty' | 'timer'>('difficulty');
+  difficulty = signal<1 | 2>(1);
+  durations  = [15, 30, 60, 90, 120, 0];
+  selected   = signal(30);
+
+  selectDifficulty(d: 1 | 2) {
+    this.difficulty.set(d);
+    this.gameState.difficulty.set(d);
+    this.step.set('timer');
+  }
 
   select(d: number) { this.selected.set(d); }
 

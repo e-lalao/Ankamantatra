@@ -154,7 +154,34 @@
   box-shadow: 0 2px 0 rgba(0,0,0,.15), 0 4px 12px rgba(0,0,0,.18);
 }
 
+/* Difficulté */
+.diff-grid {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-top: .4rem;
+}
+.diff-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+  padding: 1.4rem 1rem;
+  border-radius: 1.4rem;
+  border: 2px solid rgba(255,255,255,.3);
+  background: rgba(255,255,255,.12);
+  cursor: pointer;
+  transition: all .2s ease;
+  color: #fff;
+}
+.diff-btn:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.6); transform: translateY(-3px); }
+.diff-emoji { font-size: 2rem; }
+.diff-name  { font-family: 'Fredoka One', cursive; font-size: 1.4rem; }
+.diff-hint  { font-family: 'Nunito', sans-serif; font-size: .8rem; opacity: .8; text-align: center; }
+
 @media (max-width: 420px) {
   .duration-btn { width: 68px; height: 68px; }
   .duration-num { font-size: 1.5rem; }
+  .diff-grid { flex-direction: column; }
 }

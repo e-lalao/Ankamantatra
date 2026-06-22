@@ -28,6 +28,7 @@ export class MultiSetup {
   loading    = signal(false);
   error      = signal('');
   duration   = signal(30);
+  difficulty = signal<1 | 2>(1);
 
   readonly durations = [15, 30, 60, 90, 120, 0];
 
@@ -46,7 +47,9 @@ export class MultiSetup {
     try {
       const all = await firstValueFrom(this.quiz.fetchQuestions());
       if (!all?.length) throw new Error('Tsy hita ny fanontaniana');
-      const shuffled = this.quiz.shuffle(all);
+      const filtered = this.quiz.filterByDifficulty(all, this.difficulty());
+      if (!filtered.length) throw new Error('Tsy misy fanontaniana amin\'ity haingana ity');
+      const shuffled = this.quiz.shuffle(filtered);
       await this.multi.createSession(this.playerName().trim(), this.duration(), shuffled);
       this.router.navigate(['/lobby']);
     } catch (e: any) {

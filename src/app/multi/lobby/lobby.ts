@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, effect } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, effect, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MultiService } from '../../multi.service';
 import { AudioService } from '../../audio.service';
@@ -15,7 +15,7 @@ export class Lobby implements OnInit, OnDestroy {
   multi  = inject(MultiService);
   audio  = inject(AudioService);
 
-  copied = false;
+  copied = signal(false);
 
   constructor() {
     // Navigate to game when host starts
@@ -46,9 +46,22 @@ export class Lobby implements OnInit, OnDestroy {
   }
 
   async copyCode() {
-    await navigator.clipboard.writeText(this.code);
-    this.copied = true;
-    setTimeout(() => this.copied = false, 2000);
+    try {
+      await navigator.clipboard.writeText(this.code);
+    } catch {
+      // Fallback pour les navigateurs mobiles qui bloquent clipboard API
+      const el = document.createElement('input');
+      el.value = this.code;
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
+      document.body.appendChild(el);
+      el.focus();
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    this.copied.set(true);
+    setTimeout(() => this.copied.set(false), 2000);
   }
 
   async leave() {

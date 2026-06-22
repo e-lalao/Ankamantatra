@@ -5,6 +5,7 @@ import { Observable, map } from 'rxjs';
 export interface Question {
   question: string;
   reponse: string;
+  difficulte: number;
 }
 
 // ← Remplacez VOTRE_SHEET_ID par l'ID de votre Google Sheet
@@ -31,8 +32,9 @@ export class QuizService {
       .map(line => {
         const parts = this.parseLine(line);
         return {
-          question: (parts[0] ?? '').replace(/^"|"$/g, '').trim(),
-          reponse: (parts[1] ?? '').replace(/^"|"$/g, '').trim(),
+          question:   (parts[0] ?? '').replace(/^"|"$/g, '').trim(),
+          reponse:    (parts[1] ?? '').replace(/^"|"$/g, '').trim(),
+          difficulte: parseInt((parts[2] ?? '1').replace(/^"|"$/g, '').trim(), 10) || 1,
         };
       })
       .filter(q => q.question && q.reponse);
@@ -49,6 +51,10 @@ export class QuizService {
     }
     result.push(cur);
     return result;
+  }
+
+  filterByDifficulty(questions: Question[], level: 1 | 2): Question[] {
+    return questions.filter(q => q.difficulte === level);
   }
 
   shuffle<T>(arr: T[]): T[] {

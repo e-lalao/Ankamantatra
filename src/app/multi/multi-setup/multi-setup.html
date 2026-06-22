@@ -49,6 +49,18 @@
       </div>
 
       <div class="field-group">
+        <label class="field-label">Ambaratonga</label>
+        <div class="diff-grid">
+          <button class="diff-btn" [class.active]="difficulty() === 1" (click)="difficulty.set(1)">
+            🟢 Mora
+          </button>
+          <button class="diff-btn" [class.active]="difficulty() === 2" (click)="difficulty.set(2)">
+            🔴 Sarotra
+          </button>
+        </div>
+      </div>
+
+      <div class="field-group">
         <label class="field-label">Fe-potoana famaliana</label>
         <div class="dur-grid">
           @for (d of durations; track d) {
@@ -75,7 +87,7 @@
       }
 
       <button class="start-btn" (click)="create()" [disabled]="loading()">
-        @if (loading()) { ⏳ Andraso kely... } @else { Mamorona session →  }
+        @if (loading()) { ⏳ Andraso kely... } @else { Hamorona vondrona →  }
       </button>
     }
 

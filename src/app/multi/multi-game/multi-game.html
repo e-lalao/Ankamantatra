@@ -22,9 +22,9 @@
 
       <div class="done-btns">
         @if (isHost) {
-          <button class="go-home-btn orange" (click)="onEnd()">Hamarana ny lalao</button>
+          <button class="go-home-btn orange" (click)="onEnd()">🏠 Pejy fandraisana</button>
         } @else {
-          <button class="go-home-btn" (click)="onHome()">Hiverina</button>
+          <button class="go-home-btn" (click)="onHome()">🏠 Pejy fandraisana</button>
         }
       </div>
     </div>
@@ -39,7 +39,11 @@
 
         <!-- Header -->
         <div class="mg-header">
-          <button class="home-btn" (click)="onHome()" title="Hiverina">🏠</button>
+          @if (isHost) {
+            <button class="home-btn end-btn" (click)="onEndGame()" title="Hamarana ny lalao">⏹</button>
+          } @else {
+            <button class="home-btn leave-btn" (click)="onHivoaka()" title="Hivoaka">🚪</button>
+          }
 
           <div class="score-badge">
             🏆 <span class="score-num">{{ myPlayer()?.score ?? 0 }}</span>
@@ -98,13 +102,7 @@
 
         <!-- Boutons — en dehors de la carte, sur fond bleu -->
         <div class="action-btns">
-          @if (cardState() === 'idle') {
-            <button class="afapo-btn" (click)="onAfapo()">Afapo 👀</button>
-          }
-          @if (cardState() === 'revealed') {
-            <p class="wait-timer">⏳ Miandry ny faran'ny fe-potoana...</p>
-          }
-          @if (cardState() === 'failed' || cardState() === 'correct') {
+          @if (allAnswered) {
             @if (isHost) {
               <button class="manaraka-btn" (click)="onManaraka()">
                 Manaraka <span class="arrow">→</span>
@@ -112,6 +110,12 @@
             } @else {
               <p class="wait-host">Miandry ny tompon-trano...</p>
             }
+          } @else if (cardState() === 'idle') {
+            <button class="afapo-btn" (click)="onAfapo()">Afapo 👀</button>
+          } @else if (cardState() === 'revealed') {
+            <p class="wait-timer">⏳ Miandry ny faran'ny fe-potoana...</p>
+          } @else {
+            <p class="wait-host">Miandry ny mpilalao hafa...</p>
           }
         </div>
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, computed, effect, untracked } from '@angular/core';
 import { Router } from '@angular/router';
 import { MultiService } from '../../multi.service';
 import { QuizService } from '../../quiz.service';
@@ -26,6 +26,8 @@ export class MultiGame implements OnInit, OnDestroy {
   revealed    = signal(false);
   timeLeft    = signal(0);
   private timerRef: ReturnType<typeof setInterval> | null = null;
+  private lastQuestionKey = '';
+  private resetPending    = false;
 
   // ── Dérivations depuis la session Supabase ────────────────────────────
   session  = this.multi.session;
@@ -47,9 +49,12 @@ export class MultiGame implements OnInit, OnDestroy {
     this.timerRatio() > 0.5 ? '#22c55e' : this.timerRatio() > 0.25 ? '#f97316' : '#ef4444'
   );
 
-  get hasTimer()     { return this.duration() > 0; }
-  get isHost()       { return this.multi.isHost; }
-  get allAnswered()  { return this.multi.players().every(p => p.answered); }
+  get hasTimer()    { return this.duration() > 0; }
+  get isHost()      { return this.multi.isHost; }
+  get allAnswered() {
+    const active = this.multi.players().filter(p => !p.left_game);
+    return active.length > 0 && active.every(p => p.answered);
+  }
 
   // Résultats finaux
   resultEmoji = computed(() => {
@@ -61,28 +66,33 @@ export class MultiGame implements OnInit, OnDestroy {
   });
 
   constructor() {
-    // Quand current_question change → nouvelle question
+    // Quand current_question change → reset UNIQUE (dédoublonné par clé)
     effect(() => {
+      const s = this.session();
       const q = this.currentQ();
-      if (q && this.session()?.phase === 'playing') this.resetForNewQuestion();
+      if (!q || s?.phase !== 'playing') return;
+      const key = `${s.id}-${s.current_question}`;
+      if (untracked(() => this.lastQuestionKey) === key) return;
+      this.lastQuestionKey = key;
+      this.resetForNewQuestion();
     });
 
-    // Fin automatique du chrono quand tous les joueurs ont répondu
+    // Fin de manche automatique quand tous les joueurs actifs ont répondu
     effect(() => {
-      const allDone = this.multi.players().length > 0 &&
-                      this.multi.players().every(p => p.answered);
+      const active = this.multi.players().filter(p => !p.left_game);
+      const allDone = active.length > 0 && active.every(p => p.answered);
       if (!allDone) return;
+      if (this.resetPending) return;
       const state = this.cardState();
-      if (state === 'revealed') {
-        // Afapo avait été cliqué, les autres aussi — arrêter le chrono maintenant
-        this.clearTimer();
-        this.cardState.set('failed');
-      } else if (state === 'idle') {
-        // Le joueur n'avait pas encore répondu — révéler et soumettre
+      if (state === 'idle') {
+        // Quelqu'un d'autre a trouvé → révéler la réponse pour ce joueur
         this.clearTimer();
         this.revealed.set(true);
         this.cardState.set('failed');
-        this.multi.submitAnswer(false);
+      } else if (state === 'revealed') {
+        // Tout le monde est Afapo → fin du chrono
+        this.clearTimer();
+        this.cardState.set('failed');
       }
     });
 
@@ -107,6 +117,9 @@ export class MultiGame implements OnInit, OnDestroy {
 
   // ── Timer ─────────────────────────────────────────────────────────────
   private resetForNewQuestion() {
+    this.resetPending = true;
+    // Réinitialiser answered localement en premier pour que allDone ne se déclenche pas
+    this.multi.players.update(list => list.map(p => ({ ...p, answered: false })));
     this.userInput.set('');
     this.cardState.set('idle');
     this.revealed.set(false);
@@ -115,6 +128,8 @@ export class MultiGame implements OnInit, OnDestroy {
       this.timeLeft.set(this.duration());
       this.startTimer();
     }
+    // Laisser le temps aux événements Supabase obsolètes de passer avant de réactiver l'effet
+    setTimeout(() => { this.resetPending = false; }, 500);
   }
 
   private startTimer() {
@@ -199,6 +214,17 @@ export class MultiGame implements OnInit, OnDestroy {
 
   onHome() {
     this.multi.cleanup();
+    this.router.navigate(['/']);
+  }
+
+  // Hôte : terminer le jeu maintenant → affiche le classement final pour tous
+  async onEndGame() {
+    await this.multi.endGame();
+  }
+
+  // Non-hôte : quitter sans supprimer sa ligne (reste dans le classement final)
+  async onHivoaka() {
+    await this.multi.leaveGame();
     this.router.navigate(['/']);
   }
 }

@@ -64,7 +64,7 @@ export class Game implements OnInit, OnDestroy {
     const pct = this.score() / (this.questions().length || 1);
     if (pct === 1)   return 'Mahafinaritra!';
     if (pct >= 0.75) return 'Tsara be!';
-    if (pct >= 0.5)  return 'Azo atao tsara!';
+    if (pct >= 0.5)  return 'Azoazo!';
     return 'Avereno indray!';
   });
 
@@ -75,8 +75,9 @@ export class Game implements OnInit, OnDestroy {
     this.audio.stopBgMusic();
     this.quiz.fetchQuestions().subscribe({
       next: qs => {
-        if (!qs.length) { this.phase.set('error'); return; }
-        this.questions.set(this.quiz.shuffle(qs));
+        const filtered = this.quiz.filterByDifficulty(qs, this.gameState.difficulty());
+        if (!filtered.length) { this.phase.set('error'); return; }
+        this.questions.set(this.quiz.shuffle(filtered));
         this.beginQuestion();
       },
       error: () => { this.phase.set('error'); }

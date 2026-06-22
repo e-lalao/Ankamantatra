@@ -4,33 +4,57 @@
   <div class="bg-circle bg-2"></div>
 
   <div class="setup-card">
-    <a routerLink="/" class="back-link">← Hiverina</a>
 
-    <div class="setup-icon">⏱️</div>
-    <h1 class="setup-title">Asio ny fe-potoana</h1>
-    <p class="setup-sub">Fe-potoana isaky ny fanontaniana</p>
+    @if (step() === 'difficulty') {
+      <a routerLink="/" class="back-link">← Hiverina</a>
+      <div class="setup-icon">🎯</div>
+      <h1 class="setup-title">Misafidy haingana</h1>
+      <p class="setup-sub">Inona no haingana tianao?</p>
 
-    <div class="duration-grid">
-      @for (d of durations; track d) {
-        <button
-          class="duration-btn"
-          [ngClass]="{ active: selected() === d, unlimited: d === 0 }"
-          (click)="select(d)"
-        >
-          @if (d === 0) {
-            <span class="duration-num">∞</span>
-            <span class="duration-unit">Tsy asiana fetra</span>
-          } @else {
-            <span class="duration-num">{{ d }}</span>
-            <span class="duration-unit">s</span>
-          }
+      <div class="diff-grid">
+        <button class="diff-btn mora" (click)="selectDifficulty(1)">
+          <span class="diff-emoji">🟢</span>
+          <span class="diff-name">Mora</span>
+          <span class="diff-hint">Fanontaniana mora</span>
         </button>
-      }
-    </div>
+        <button class="diff-btn sarotra" (click)="selectDifficulty(2)">
+          <span class="diff-emoji">🔴</span>
+          <span class="diff-name">Sarotra</span>
+          <span class="diff-hint">Fanontaniana sarotra</span>
+        </button>
+      </div>
+    }
 
-    <button class="start-btn" (click)="start()">
-      ▶&nbsp; Hanomboka!
-    </button>
+    @if (step() === 'timer') {
+      <button class="back-link" (click)="step.set('difficulty')">← Hiverina</button>
+
+      <div class="setup-icon">⏱️</div>
+      <h1 class="setup-title">Asio ny fe-potoana</h1>
+      <p class="setup-sub">Fe-potoana isaky ny fanontaniana</p>
+
+      <div class="duration-grid">
+        @for (d of durations; track d) {
+          <button
+            class="duration-btn"
+            [ngClass]="{ active: selected() === d, unlimited: d === 0 }"
+            (click)="select(d)"
+          >
+            @if (d === 0) {
+              <span class="duration-num">∞</span>
+              <span class="duration-unit">Tsy asiana fetra</span>
+            } @else {
+              <span class="duration-num">{{ d }}</span>
+              <span class="duration-unit">s</span>
+            }
+          </button>
+        }
+      </div>
+
+      <button class="start-btn" (click)="start()">
+        ▶&nbsp; Hanomboka!
+      </button>
+    }
+
   </div>
 
 </div>

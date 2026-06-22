@@ -27,6 +27,7 @@ export interface Player {
   score: number;
   is_host: boolean;
   answered: boolean;
+  left_game: boolean;
   created_at: string;
 }
 
@@ -158,6 +159,21 @@ export class MultiService {
 
     await this.client.from('players').update(update).eq('id', pid);
     this.players.update(list => list.map(p => p.id === pid ? { ...p, ...update } : p));
+
+    // Bonne réponse → la manche se termine, tous les autres joueurs actifs passent à answered=true
+    if (correct) {
+      const s = this.session();
+      if (s) {
+        await this.client.from('players')
+          .update({ answered: true })
+          .eq('session_id', s.id)
+          .eq('left_game', false)
+          .neq('id', pid);
+        this.players.update(list =>
+          list.map(p => p.id !== pid && !p.left_game ? { ...p, answered: true } : p)
+        );
+      }
+    }
   }
 
   async nextQuestion(): Promise<void> {
@@ -165,11 +181,32 @@ export class MultiService {
     if (!s) return;
     const next = s.current_question + 1;
     if (next >= s.questions.length) {
+      this.session.update(cur => cur ? { ...cur, phase: 'done' } : null);
       await this.client.from('sessions').update({ phase: 'done' }).eq('id', s.id);
     } else {
+      // Mise à jour optimiste de la session pour déclencher l'effet currentQ immédiatement
+      this.session.update(cur => cur ? { ...cur, current_question: next } : null);
       await this.client.from('sessions').update({ current_question: next }).eq('id', s.id);
-      await this.client.from('players').update({ answered: false }).eq('session_id', s.id);
+      // Réinitialiser uniquement les joueurs qui n'ont pas quitté
+      await this.client.from('players').update({ answered: false })
+        .eq('session_id', s.id).eq('left_game', false);
     }
+  }
+
+  async endGame(): Promise<void> {
+    const s = this.session();
+    if (!s) return;
+    this.session.update(cur => cur ? { ...cur, phase: 'done' } : null);
+    await this.client.from('sessions').update({ phase: 'done' }).eq('id', s.id);
+  }
+
+  async leaveGame(): Promise<void> {
+    const pid = this.myPlayerId();
+    if (pid) {
+      // Marquer comme parti pour ne pas bloquer les manches suivantes
+      await this.client.from('players').update({ answered: true, left_game: true }).eq('id', pid);
+    }
+    this.cleanup();
   }
 
   async deleteSession(): Promise<void> {

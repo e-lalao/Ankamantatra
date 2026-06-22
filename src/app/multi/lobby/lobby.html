@@ -18,8 +18,8 @@
       <p class="code-label">Teny miafin\'ny vondrona</p>
       <div class="code-box">
         <span class="code-text">{{ code }}</span>
-        <button class="copy-btn" (click)="copyCode()" [title]="copied ? 'Voadika!' : 'Copier le code'">
-          {{ copied ? '✓' : '📋' }}
+        <button class="copy-btn" (click)="copyCode()" [title]="copied() ? 'Voadika!' : 'Copier le code'">
+          {{ copied() ? '✓' : '📋' }}
         </button>
       </div>
       <p class="code-hint">Zarao amin'ny namanao ity teny miafina ity</p>
